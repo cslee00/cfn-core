@@ -77,7 +77,7 @@ public class CfnObject extends GroovyObjectSupport implements CfnIntrinsicFuncti
         checkArgument(!isNullOrEmpty(propertyName), "propertyName is required to be non-null & not empty: %s", propertyName);
 
         if (frozenProperties.contains(propertyName)) {
-            throw new PropertyFrozenException(propertyPath + "." + propertyName + " is frozen");
+            throw new PropertyFrozenException(propertyPath + '.' + propertyName + " is frozen");
         }
 
         Object targetValue = propertyValue;
@@ -139,12 +139,12 @@ public class CfnObject extends GroovyObjectSupport implements CfnIntrinsicFuncti
     }
 
     private CfnObject handleClosure(final String name, Closure<?> closure, @Nullable final Object currentValue) {
-        if (currentValue != null && !(currentValue instanceof CfnObject)) {
+        if ((currentValue != null) && !(currentValue instanceof CfnObject)) {
             throw new IllegalArgumentException("Cannot overwrite CfnObject with " + currentValue.getClass());
         }
 
         // merge properties into existing object if it exists
-        CfnObject delegate = currentValue != null ? (CfnObject) currentValue : new CfnObject(resourceType,propertyPath + "." + name);
+        CfnObject delegate = (currentValue != null) ? (CfnObject) currentValue : new CfnObject(resourceType, propertyPath + '.' + name);
 
         closure.setDelegate(delegate);
         closure.setResolveStrategy(Closure.DELEGATE_FIRST);
@@ -153,28 +153,24 @@ public class CfnObject extends GroovyObjectSupport implements CfnIntrinsicFuncti
     }
 
     public final void makeImmutable(final ImmutabilityStrategy immutabilityStrategy) {
-        final Set<String> tempFrozenProperties = new LinkedHashSet<>();
         String propertyPathRoot = propertyPath;
-        if (propertyPathRoot.contains(".")) {
-            propertyPathRoot = propertyPathRoot.substring(propertyPathRoot.indexOf(".") + 1);
-        } else {
-            propertyPathRoot = "";
-        }
+        propertyPathRoot = propertyPathRoot.contains(".") ? propertyPathRoot.substring(propertyPathRoot.indexOf('.') + 1) : "";
 
         String finalPropertyPathRoot = propertyPathRoot;
-        dynamicProperties.entrySet().forEach(entry -> {
-            String propertyPath = finalPropertyPathRoot + "." + String.valueOf(((Map.Entry) entry).getKey());
-            if (finalPropertyPathRoot.equals("")) {
-                propertyPath = entry.getKey();
+        final Set<String> tempFrozenProperties = new LinkedHashSet<>();
+        dynamicProperties.forEach((key, value) -> {
+            String propertyPath = finalPropertyPathRoot + '.' + key;
+            if (finalPropertyPathRoot.isEmpty()) {
+                propertyPath = key;
             }
 
-            Tuple result = immutabilityStrategy.maybeMakeImmutable(propertyPath, entry.getValue());
+            Tuple result = immutabilityStrategy.maybeMakeImmutable(propertyPath, value);
             if (result != null) {
                 // prevent overwriting the property entirely
-                tempFrozenProperties.add(entry.getKey());
+                tempFrozenProperties.add(key);
 
                 // store (semi)immutable value (collections, maps, CfnObjects inside collections & maps)
-                dynamicProperties.put(entry.getKey(), result.get(0));
+                dynamicProperties.put(key, result.get(0));
             }
         });
 

@@ -86,7 +86,7 @@ final class CfnObjectSerializer extends StdSerializer<CfnObject> {
         }
 
         try {
-            propertyName = resourceSpecificationService.findPropertyNameFor(cfnObject.getResourceType(),cfnObject.getPropertyPath() + "." + propertyName );
+            propertyName = resourceSpecificationService.findPropertyNameFor(cfnObject.getResourceType(),cfnObject.getPropertyPath() + '.' + propertyName );
         } catch( ResourceSpecException e ) {
             logger.warn("Unknown property name '{}' : {}", propertyName, e.getMessage() );
         }

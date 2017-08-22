@@ -18,6 +18,7 @@ package com.digitalascent.cfn.core.strategy;
 
 import groovy.lang.Tuple;
 
+@FunctionalInterface
 public interface ImmutabilityStrategy {
     Tuple maybeMakeImmutable(String propertyPath, Object propertyValue);
 }

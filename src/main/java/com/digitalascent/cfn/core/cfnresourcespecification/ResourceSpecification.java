@@ -26,7 +26,7 @@ public final class ResourceSpecification {
     public static class CfnTypeSpecification {
         private String documentation;
 
-        private Map<String, CfnPropertySpecification> properties = new HashMap<>();
+        private final Map<String, CfnPropertySpecification> properties = new HashMap<>();
 
         public String getDocumentation() {
             return documentation;
@@ -84,13 +84,13 @@ public final class ResourceSpecification {
         }
     }
 
-    private Map<String, CfnTypeSpecification> resourceTypes = new HashMap<>();
+    private final Map<String, CfnTypeSpecification> resourceTypes = new HashMap<>();
 
     public Map<String, CfnTypeSpecification> getPropertyTypes() {
         return propertyTypes;
     }
 
-    private Map<String, CfnTypeSpecification> propertyTypes = new HashMap<>();
+    private final Map<String, CfnTypeSpecification> propertyTypes = new HashMap<>();
 
     public String getResourceSpecificationVersion() {
         return resourceSpecificationVersion;

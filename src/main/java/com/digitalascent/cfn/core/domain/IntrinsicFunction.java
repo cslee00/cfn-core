@@ -32,7 +32,7 @@ public final class IntrinsicFunction {
 
     @Override
     public String toString() {
-        return functionName + "(" + arguments + ")";
+        return functionName + '(' + arguments + ')';
     }
 
     public String getFunctionName() {

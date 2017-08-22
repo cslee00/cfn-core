@@ -30,14 +30,14 @@ import static com.google.common.base.Strings.isNullOrEmpty;
 @SuppressWarnings("unused")
 public final class ResourceSpecificationService extends SimpleApplicationObject {
 
+    private static final Pattern INDEX_PATTERN = Pattern.compile("\\[[0-9]+]$");
+
     public ResourceSpecificationService() {
         ResourceSpecificationLoader loader = new ResourceSpecificationLoader();
         this.resourceSpecification = loader.loadResourceSpecification();
     }
 
     private final ResourceSpecification resourceSpecification;
-
-    private static final Pattern INDEX_PROP_PATTERN = Pattern.compile("\\[[0-9]+\\]$");
 
     public String findPropertyNameFor(String resourceType, String propertyPath) throws ResourceSpecException {
         String type = resourceType;
@@ -47,7 +47,7 @@ public final class ResourceSpecificationService extends SimpleApplicationObject 
         for (String propertyName : propertyNames) {
 
             // normalize out indexed properties, e.g. blockDeviceMappings[0] -> blockDeviceMappings
-            propertyName = propertyName.replaceAll("\\[[0-9]+\\]$", "");
+            propertyName = INDEX_PATTERN.matcher(propertyName).replaceAll("");
 
             if ("properties".equalsIgnoreCase(propertyName)) {
                 continue;
@@ -69,10 +69,9 @@ public final class ResourceSpecificationService extends SimpleApplicationObject 
     }
 
     private ResourceSpecification.CfnTypeSpecification findPropertyType(String resourceType, String itemType) {
-        Set<String> searchPatterns = ImmutableSet.of(resourceType + "." + itemType, itemType);
-        ResourceSpecification.CfnTypeSpecification typeSpec;
+        Set<String> searchPatterns = ImmutableSet.of(resourceType + '.' + itemType, itemType);
         for (String searchPattern : searchPatterns) {
-            typeSpec = resourceSpecification.getPropertyTypes().get(searchPattern);
+            ResourceSpecification.CfnTypeSpecification typeSpec = resourceSpecification.getPropertyTypes().get(searchPattern);
             if (typeSpec != null) {
                 getLogger().debug("Resolved property type {}", itemType);
                 return typeSpec;
@@ -85,7 +84,7 @@ public final class ResourceSpecificationService extends SimpleApplicationObject 
         private final String formalPropertyName;
         private final ResourceSpecification.CfnPropertySpecification propertySpecification;
 
-        public PropertySpecHolder(String formalPropertyName, ResourceSpecification.CfnPropertySpecification propertySpecification) {
+        PropertySpecHolder(String formalPropertyName, ResourceSpecification.CfnPropertySpecification propertySpecification) {
             this.formalPropertyName = checkNotNull(formalPropertyName, "formalPropertyName is required");
             this.propertySpecification = checkNotNull(propertySpecification, "propertySpecification is required");
         }

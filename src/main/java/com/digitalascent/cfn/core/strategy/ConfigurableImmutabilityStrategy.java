@@ -60,7 +60,7 @@ public class ConfigurableImmutabilityStrategy extends SimpleApplicationObject im
 
     @SuppressWarnings("unchecked")
     private Object makeImmutable(Object o) {
-        if (o instanceof String || o instanceof Number || o instanceof Boolean) {
+        if ((o instanceof String) || (o instanceof Number) || (o instanceof Boolean)) {
             return o;
         }
 
@@ -126,7 +126,7 @@ public class ConfigurableImmutabilityStrategy extends SimpleApplicationObject im
     private final Set<String> mutablePropertyPaths;
 
     private static class SemiMutableMap<K, V> extends ForwardingMap<K, V> {
-        public SemiMutableMap(Map<K, V> delegate) {
+        SemiMutableMap(Map<K, V> delegate) {
             this.delegate = checkNotNull(delegate, "delegate is required");
         }
 
@@ -150,7 +150,7 @@ public class ConfigurableImmutabilityStrategy extends SimpleApplicationObject im
     }
 
     private static class SemiMutableCollection<T> extends ForwardingCollection<T> {
-        public SemiMutableCollection(Collection<T> delegate) {
+        SemiMutableCollection(Collection<T> delegate) {
             this.delegate = checkNotNull(delegate, "delegate is required");
         }
 
