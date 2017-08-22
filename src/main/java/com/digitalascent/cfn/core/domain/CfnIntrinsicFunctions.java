@@ -1,3 +1,19 @@
+/*
+ * Copyright 2017-2017 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.digitalascent.cfn.core.domain;
 
 import com.google.common.collect.ImmutableList;
@@ -31,8 +47,7 @@ public interface CfnIntrinsicFunctions {
         return new IntrinsicFunction("Ref", name);
     }
 
-    @SuppressWarnings("rawtypes")
-    default IntrinsicFunction fnSub(String input, Map replacementMap) {
+    default IntrinsicFunction fnSub(String input, Map<String,Object> replacementMap) {
         List<Object> list = new ArrayList<>(2);
         list.add(input);
         if ( !replacementMap.isEmpty()) {
@@ -49,8 +64,7 @@ public interface CfnIntrinsicFunctions {
         return new IntrinsicFunction("Fn::Split", ImmutableList.of(delimiter, sourceString));
     }
 
-    @SuppressWarnings("rawtypes")
-    default IntrinsicFunction fnSelect(int index, List list) {
+    default IntrinsicFunction fnSelect(int index, List<Object> list) {
         return new IntrinsicFunction("Fn::Select", ImmutableList.of(index, list));
     }
 
