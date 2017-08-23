@@ -41,7 +41,7 @@ public final class ResourceSpecificationService extends SimpleApplicationObject 
 
     public String findPropertyNameFor(String resourceType, String propertyPath) throws ResourceSpecException {
         String type = resourceType;
-        ResourceSpecification.CfnTypeSpecification typeSpec = findResourceType(resourceType);
+        CfnTypeSpecification typeSpec = findResourceType(resourceType);
         List<String> propertyNames = Splitter.on('.').splitToList(propertyPath);
         PropertySpecHolder propertySpecHolder = null;
         for (String propertyName : propertyNames) {
@@ -68,10 +68,10 @@ public final class ResourceSpecificationService extends SimpleApplicationObject 
         return propertySpecHolder.getFormalPropertyName();
     }
 
-    private ResourceSpecification.CfnTypeSpecification findPropertyType(String resourceType, String itemType) {
+    private CfnTypeSpecification findPropertyType(String resourceType, String itemType) {
         Set<String> searchPatterns = ImmutableSet.of(resourceType + '.' + itemType, itemType);
         for (String searchPattern : searchPatterns) {
-            ResourceSpecification.CfnTypeSpecification typeSpec = resourceSpecification.getPropertyTypes().get(searchPattern);
+            CfnTypeSpecification typeSpec = resourceSpecification.getPropertyTypes().get(searchPattern);
             if (typeSpec != null) {
                 getLogger().debug("Resolved property type {}", itemType);
                 return typeSpec;
@@ -82,9 +82,9 @@ public final class ResourceSpecificationService extends SimpleApplicationObject 
 
     private static class PropertySpecHolder {
         private final String formalPropertyName;
-        private final ResourceSpecification.CfnPropertySpecification propertySpecification;
+        private final CfnPropertySpecification propertySpecification;
 
-        PropertySpecHolder(String formalPropertyName, ResourceSpecification.CfnPropertySpecification propertySpecification) {
+        PropertySpecHolder(String formalPropertyName, CfnPropertySpecification propertySpecification) {
             this.formalPropertyName = checkNotNull(formalPropertyName, "formalPropertyName is required");
             this.propertySpecification = checkNotNull(propertySpecification, "propertySpecification is required");
         }
@@ -93,12 +93,12 @@ public final class ResourceSpecificationService extends SimpleApplicationObject 
             return formalPropertyName;
         }
 
-        public ResourceSpecification.CfnPropertySpecification getPropertySpecification() {
+        public CfnPropertySpecification getPropertySpecification() {
             return propertySpecification;
         }
     }
 
-    private PropertySpecHolder findPropertySpec(String resourceType, String propertyPath, ResourceSpecification.CfnTypeSpecification typeSpec, String propertyName) {
+    private PropertySpecHolder findPropertySpec(String resourceType, String propertyPath, CfnTypeSpecification typeSpec, String propertyName) {
         for (String formalPropertyName : typeSpec.getProperties().keySet()) {
             if (formalPropertyName.equalsIgnoreCase(propertyName)) {
                 getLogger().debug("Resolved property name '{}' -> '{}'", propertyName, formalPropertyName);
@@ -109,8 +109,8 @@ public final class ResourceSpecificationService extends SimpleApplicationObject 
         throw new ResourceSpecException(String.format("Unable to locate property '%s' on type %s for path %s", propertyName, resourceType, propertyPath));
     }
 
-    private ResourceSpecification.CfnTypeSpecification findResourceType(String resourceType) {
-        ResourceSpecification.CfnTypeSpecification typeSpec = resourceSpecification.getResourceTypes().get(resourceType);
+    private CfnTypeSpecification findResourceType(String resourceType) {
+        CfnTypeSpecification typeSpec = resourceSpecification.getResourceTypes().get(resourceType);
         if (typeSpec == null) {
             throw new ResourceSpecException("Unable to locate resource type: " + resourceType);
         }

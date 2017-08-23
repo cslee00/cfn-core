@@ -30,7 +30,6 @@ plugins {
     id 'nebula.info' version '3.6.0'
     id 'nebula.info-owners' version '3.6.0'
 
-    // TODO - do we need nebula api scope plugin? https://github.com/nebula-plugins/nebula-publishing-plugin/blob/master/src/main/groovy/nebula/plugin/publishing/scopes/ApiScopePlugin.groovy
     // TODO - include dependency info from nebula info broker (reports) somewhere...
 }
 
@@ -92,7 +91,6 @@ nebulaResolutionRules {
 ext.versions = [
         "guava" : "23.0",
         "slf4j" : "1.7.25",
-        "awsSdk": "1.11.156",
         "jackson": "2.8.9"
 ]
 
@@ -100,7 +98,7 @@ dependencies {
 
     resolutionRules 'com.netflix.nebula:gradle-resolution-rules:latest.release'
 
-    api "org.codehaus.groovy:groovy-all:2.4.10"
+    api "org.codehaus.groovy:groovy-all:2.4.12"
 
     implementation "org.slf4j:slf4j-api:${versions.slf4j}"
     implementation "com.google.guava:guava:${versions.guava}"

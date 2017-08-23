@@ -14,20 +14,9 @@
  * limitations under the License.
  */
 
-package com.digitalascent.cfn.core.domain;
+@CheckReturnValue
+@ParametersAreNonnullByDefault
+package com.digitalascent.base.core;
 
-@SuppressWarnings("unused")
-interface CfnPseudoParameters {
-    default String AWS_AccountId() { return "AWS::AccountId"; }
-
-    default String AWS_NotificationARNs() { return "AWS::NotificationARNs"; }
-
-    default String AWS_NoValue() { return "AWS::NoValue"; }
-
-    default String AWS_Region() { return "AWS::Region"; }
-
-    default String AWS_StackId() { return "AWS::StackId"; }
-
-    default String AWS_StackName() { return "AWS::StackName"; }
-
-}
+import javax.annotation.CheckReturnValue;
+import javax.annotation.ParametersAreNonnullByDefault;

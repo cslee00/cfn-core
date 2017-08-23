@@ -21,33 +21,29 @@ import com.google.common.base.MoreObjects;
 import java.util.HashMap;
 import java.util.Map;
 
-@SuppressWarnings("unused")
-public final class ResourceSpecification {
+public final class CfnTypeSpecification {
 
-    private final Map<String, CfnTypeSpecification> resourceTypes = new HashMap<>();
+    private String documentation;
 
-    public Map<String, CfnTypeSpecification> getPropertyTypes() {
-        return propertyTypes;
+    private final Map<String, CfnPropertySpecification> properties = new HashMap<>();
+
+    CfnTypeSpecification() {
+        // EMPTY
     }
 
-    private final Map<String, CfnTypeSpecification> propertyTypes = new HashMap<>();
-
-    public String getResourceSpecificationVersion() {
-        return resourceSpecificationVersion;
+    public String getDocumentation() {
+        return documentation;
     }
 
-    private String resourceSpecificationVersion;
-
-    public Map<String, CfnTypeSpecification> getResourceTypes() {
-        return resourceTypes;
+    public Map<String, CfnPropertySpecification> getProperties() {
+        return properties;
     }
 
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
-                .add("resourceSpecificationVersion", resourceSpecificationVersion)
-                .add("resourceTypes", resourceTypes)
-                .add("propertyTypes", propertyTypes)
+                .add("documentation", documentation)
+                .add("properties", properties)
                 .toString();
     }
 }

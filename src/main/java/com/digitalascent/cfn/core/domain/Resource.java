@@ -26,7 +26,6 @@ import static com.google.common.base.Strings.isNullOrEmpty;
 public final class Resource extends CfnObject {
     private final String resourceName;
     private static final Pattern LOGICAL_ID_REGEX = Pattern.compile("[a-zA-Z0-9]+");
-
     private static final int MAX_LOGICAL_ID_LENGTH = 255;
 
     public Resource(String name, String type) {

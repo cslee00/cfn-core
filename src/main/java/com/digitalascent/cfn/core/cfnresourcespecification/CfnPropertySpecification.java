@@ -18,36 +18,45 @@ package com.digitalascent.cfn.core.cfnresourcespecification;
 
 import com.google.common.base.MoreObjects;
 
-import java.util.HashMap;
-import java.util.Map;
+public final class CfnPropertySpecification {
+    private String documentation;
+    private String primitiveType;
+    private boolean required;
+    private String updateType;
 
-@SuppressWarnings("unused")
-public final class ResourceSpecification {
-
-    private final Map<String, CfnTypeSpecification> resourceTypes = new HashMap<>();
-
-    public Map<String, CfnTypeSpecification> getPropertyTypes() {
-        return propertyTypes;
+    CfnPropertySpecification() {
+        // EMPTY
     }
 
-    private final Map<String, CfnTypeSpecification> propertyTypes = new HashMap<>();
-
-    public String getResourceSpecificationVersion() {
-        return resourceSpecificationVersion;
+    public String getItemType() {
+        return itemType;
     }
 
-    private String resourceSpecificationVersion;
+    private String itemType;
 
-    public Map<String, CfnTypeSpecification> getResourceTypes() {
-        return resourceTypes;
+    public String getDocumentation() {
+        return documentation;
+    }
+
+    public String getPrimitiveType() {
+        return primitiveType;
+    }
+
+    public boolean isRequired() {
+        return required;
+    }
+
+    public String getUpdateType() {
+        return updateType;
     }
 
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
-                .add("resourceSpecificationVersion", resourceSpecificationVersion)
-                .add("resourceTypes", resourceTypes)
-                .add("propertyTypes", propertyTypes)
+                .add("documentation", documentation)
+                .add("primitiveType", primitiveType)
+                .add("required", required)
+                .add("updateType", updateType)
                 .toString();
     }
 }

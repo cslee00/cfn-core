@@ -95,7 +95,7 @@ public class CfnObject extends GroovyObjectSupport implements CfnIntrinsicFuncti
 
         // replace with ref to other resource
         if (propertyValue instanceof Resource) {
-            targetValue = ref(((Resource) propertyValue).getResourceName());
+            targetValue = ref(propertyValue);
         }
 
         // only output log info on properties, not entire nested objects
