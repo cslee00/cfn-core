@@ -130,6 +130,24 @@ contacts {
     }
 }
 
+ext.isSnapshot = version.endsWith("SNAPSHOT")
+
+artifactoryPublish { task ->
+    doFirst {
+        if (!isSnapshot) {
+            throw new GradleException('Cannot publish non-SNAPSHOT versions to OJO!')
+        }
+    }
+}
+
+bintrayUpload { task ->
+    doFirst {
+        if (isSnapshot) {
+            throw new GradleException('Cannot publish SNAPSHOT versions to Bintray!')
+        }
+    }
+}
+
 bintray {
     dryRun = false
     pkg {
@@ -138,7 +156,7 @@ bintray {
         websiteUrl = 'https://github.com/cslee00/${project.name}'
         issueTrackerUrl = 'https://github.com/cslee00/${project.name}/issues'
         vcsUrl = 'https://github.com/cslee00/${project.name}.git'
-        labels = ['cloudformation']
+        labels = ['cloudformation', 'groovy', 'dsl', 'aws']
         version {
             name = project.version
             vcsTag = project.version
