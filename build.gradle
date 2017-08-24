@@ -130,34 +130,6 @@ contacts {
     }
 }
 
-
-/*
-EXIT_STATUS=0
-echo "Publishing archives for branch $TRAVIS_BRANCH"
-if [[ -n $TRAVIS_TAG ]] || [[ $TRAVIS_BRANCH == 'master' && $TRAVIS_PULL_REQUEST == 'false' ]]; then
-  if [[ -n $TRAVIS_TAG ]]; then
-    echo "Pushing build to Bintray"
-    ./gradlew bintrayUpload || EXIT_STATUS=$?
-  else
-    echo "Publishing snapshot to OJO"
-    ./gradlew artifactoryPublish || EXIT_STATUS=$?
-  fi
-fi
-exit $EXIT_STATUS
-fi
- */
-/*
-if tagged && (on master branch && ! pull request) {
-    if( tagged ) {
-        bintray
-    } else {
-        ojo
-    }
-
-
-
-}
- */
 bintray {
     dryRun = false
     pkg {
@@ -177,13 +149,11 @@ bintray {
 
 task "release"  {
     dependsOn = [bintrayUpload,artifactoryPublish]
+    group = "publishing"
     def isSnapshot = version.endsWith("SNAPSHOT")
 
     project.artifactoryPublish.enabled = false
     project.bintrayUpload.enabled = false
-
-    /*project.artifactoryPublish.enabled = isSnapshot
-    project.bintrayUpload.enabled = !isSnapshot*/
 
     ext.tag = System.getenv("TRAVIS_TAG")
     ext.branch = System.getenv("TRAVIS_BRANCH")
