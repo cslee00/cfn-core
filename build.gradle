@@ -130,24 +130,7 @@ contacts {
     }
 }
 
-ext.isSnapshot = version.endsWith("SNAPSHOT")
 
-artifactoryPublish.enabled = isSnapshot
-bintrayUpload.enabled = !isSnapshot
-
-ext.tag = System.getenv("TRAVIS_TAG")
-ext.branch = System.getenv("TRAVIS_BRANCH")
-ext.pullRequest = System.getenv("TRAVIS_PULL_REQUEST")
-
-if ( tag || (branch == 'master' && pullRequest == 'false')) {
-    if( tag && !isSnapshot ) {
-        println "Publishing to Bintray"
-        bintrayUpload.enabled = true
-    } else {
-        println "Publishing to OJO"
-        artifactoryPublish.enabled = true
-    }
-}
 /*
 EXIT_STATUS=0
 echo "Publishing archives for branch $TRAVIS_BRANCH"
@@ -192,4 +175,27 @@ bintray {
     }
 }
 
-task "release" dependsOn([bintrayUpload,artifactoryPublish])
+task "release"  {
+    dependsOn = [bintrayUpload,artifactoryPublish]
+    def isSnapshot = version.endsWith("SNAPSHOT")
+
+    project.artifactoryPublish.enabled = false
+    project.bintrayUpload.enabled = false
+
+    /*project.artifactoryPublish.enabled = isSnapshot
+    project.bintrayUpload.enabled = !isSnapshot*/
+
+    ext.tag = System.getenv("TRAVIS_TAG")
+    ext.branch = System.getenv("TRAVIS_BRANCH")
+    ext.pullRequest = System.getenv("TRAVIS_PULL_REQUEST")
+
+    if ( tag || (branch == 'master' && pullRequest == 'false')) {
+        if( tag && !isSnapshot ) {
+            println "Publishing to Bintray"
+            bintrayUpload.enabled = true
+        } else {
+            println "Publishing to OJO"
+            artifactoryPublish.enabled = true
+        }
+    }
+}
