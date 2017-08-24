@@ -14,11 +14,9 @@
  * limitations under the License.
  */
 
-package com.digitalascent.cfn.core.output;
+@CheckReturnValue
+@ParametersAreNonnullByDefault
+package com.digitalascent.cfn.core.generator;
 
-import java.io.OutputStream;
-
-@FunctionalInterface
-public interface CloudFormationGenerator {
-    void generate(Object obj, OutputStream os, boolean prettyPrint);
-}
+import javax.annotation.CheckReturnValue;
+import javax.annotation.ParametersAreNonnullByDefault;

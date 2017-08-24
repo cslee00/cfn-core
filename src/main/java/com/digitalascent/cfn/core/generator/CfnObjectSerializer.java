@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.digitalascent.cfn.core.output;
+package com.digitalascent.cfn.core.generator;
 
 import com.digitalascent.cfn.core.cfnresourcespecification.ResourceSpecException;
 import com.digitalascent.cfn.core.cfnresourcespecification.ResourceSpecificationService;

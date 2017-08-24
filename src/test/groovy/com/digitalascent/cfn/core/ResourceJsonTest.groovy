@@ -17,8 +17,9 @@
 package com.digitalascent.cfn.core
 
 import com.digitalascent.cfn.core.cfnresourcespecification.ResourceSpecificationService
+import com.digitalascent.cfn.core.cfnresourcespecification.ResourceSpecificationServiceImpl
 import com.digitalascent.cfn.core.domain.CfnResource
-import com.digitalascent.cfn.core.output.JsonCloudFormationGenerator
+import com.digitalascent.cfn.core.generator.JsonCloudFormationGenerator
 import com.digitalascent.cfn.core.strategy.DefaultImmutabilityStrategy
 import groovy.json.JsonSlurper
 import spock.lang.Shared
@@ -30,7 +31,7 @@ class ResourceJsonTest extends Specification{
     CfnResource subject
 
     @Shared
-    ResourceSpecificationService resourceSpecificationService = new ResourceSpecificationService()
+    ResourceSpecificationService resourceSpecificationService = new ResourceSpecificationServiceImpl()
 
     def setupSpec() {
         CfnResource anotherResource = CfnResource.create("resource2","anotherResourceType")
