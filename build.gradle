@@ -192,3 +192,4 @@ bintray {
     }
 }
 
+task "release" dependsOn([bintrayUpload,artifactoryPublish])
