@@ -132,22 +132,49 @@ contacts {
 
 ext.isSnapshot = version.endsWith("SNAPSHOT")
 
-artifactoryPublish { task ->
-    doFirst {
-        if (!isSnapshot) {
-            throw new GradleException('Cannot publish non-SNAPSHOT versions to OJO!')
-        }
+artifactoryPublish.enabled = isSnapshot
+bintrayUpload.enabled = !isSnapshot
+
+ext.tag = System.getenv("TRAVIS_TAG")
+ext.branch = System.getenv("TRAVIS_BRANCH")
+ext.pullRequest = System.getenv("TRAVIS_PULL_REQUEST")
+
+if ( tag || (branch == 'master' && pullRequest == 'false')) {
+    if( tag && !isSnapshot ) {
+        println "Publishing to Bintray"
+        bintrayUpload.enabled = true
+    } else {
+        println "Publishing to OJO"
+        artifactoryPublish.enabled = true
     }
 }
-
-bintrayUpload { task ->
-    doFirst {
-        if (isSnapshot) {
-            throw new GradleException('Cannot publish SNAPSHOT versions to Bintray!')
-        }
+/*
+EXIT_STATUS=0
+echo "Publishing archives for branch $TRAVIS_BRANCH"
+if [[ -n $TRAVIS_TAG ]] || [[ $TRAVIS_BRANCH == 'master' && $TRAVIS_PULL_REQUEST == 'false' ]]; then
+  if [[ -n $TRAVIS_TAG ]]; then
+    echo "Pushing build to Bintray"
+    ./gradlew bintrayUpload || EXIT_STATUS=$?
+  else
+    echo "Publishing snapshot to OJO"
+    ./gradlew artifactoryPublish || EXIT_STATUS=$?
+  fi
+fi
+exit $EXIT_STATUS
+fi
+ */
+/*
+if tagged && (on master branch && ! pull request) {
+    if( tagged ) {
+        bintray
+    } else {
+        ojo
     }
-}
 
+
+
+}
+ */
 bintray {
     dryRun = false
     pkg {
@@ -164,3 +191,4 @@ bintray {
         }
     }
 }
+
