@@ -27,6 +27,9 @@ import java.util.regex.Pattern;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Strings.isNullOrEmpty;
 
+/**
+ * http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-resource-specification.html
+ */
 @SuppressWarnings("unused")
 public final class ResourceSpecificationService extends SimpleApplicationObject {
 

@@ -31,23 +31,23 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 @SuppressWarnings("unused")
 public interface CfnIntrinsicFunctions {
-    default IntrinsicFunction ref(Object ref) {
-        checkNotNull(ref, "ref is required");
+    default IntrinsicFunction Ref(Object ref) {
+        checkNotNull(ref, "Ref is required");
 
         String name = null;
         if (ref instanceof String) {
             name = (String) ref;
         }
 
-        if (ref instanceof Resource) {
-            name = ((Resource) ref).getResourceName();
+        if (ref instanceof CfnResource) {
+            name = ((CfnResource) ref).getResourceName();
         }
-        checkArgument(name != null, "name != null; unknown type for ref : %s or resource name is null", ref.getClass());
+        checkArgument(name != null, "name != null; unknown type for Ref : %s or resource name is null", ref.getClass());
 
         return new IntrinsicFunction("Ref", name);
     }
 
-    default IntrinsicFunction fnSub(String input, Map<String,Object> replacementMap) {
+    default IntrinsicFunction Fn_Sub(String input, Map<String,Object> replacementMap) {
         List<Object> list = new ArrayList<>(2);
         list.add(input);
         if ( !replacementMap.isEmpty()) {
@@ -56,57 +56,55 @@ public interface CfnIntrinsicFunctions {
         return new IntrinsicFunction("Fn::Sub", list);
     }
 
-    default IntrinsicFunction fnSub(String input) {
-        return fnSub(input, ImmutableMap.of());
+    default IntrinsicFunction Fn_Sub(String input) {
+        return Fn_Sub(input, ImmutableMap.of());
     }
 
-    default IntrinsicFunction fnSplit(String delimiter, Object sourceString) {
+    default IntrinsicFunction Fn_Split(String delimiter, Object sourceString) {
         return new IntrinsicFunction("Fn::Split", ImmutableList.of(delimiter, sourceString));
     }
 
-    default IntrinsicFunction fnSelect(int index, List<Object> list) {
+    default IntrinsicFunction Fn_Select(int index, List<Object> list) {
         return new IntrinsicFunction("Fn::Select", ImmutableList.of(index, list));
     }
 
-    default IntrinsicFunction fnImportValue(Object value) {
+    default IntrinsicFunction Fn_ImportValue(Object value) {
         return new IntrinsicFunction("Fn::ImportValue", value);
     }
 
-    default IntrinsicFunction fnGetAZs(Object value) {
+    default IntrinsicFunction Fn_GetAZs(Object value) {
         return new IntrinsicFunction("Fn::GetAZs", value);
     }
 
-    default IntrinsicFunction fnGetAtt(String logicalResourceName, Object attributeName) {
+    default IntrinsicFunction Fn_GetAtt(String logicalResourceName, Object attributeName) {
         return new IntrinsicFunction("Fn::GetAtt", ImmutableList.of(logicalResourceName, attributeName));
     }
 
-    default IntrinsicFunction fnFindInMap(Object mapName, Object topLevelKey, Object secondLevelKey) {
+    default IntrinsicFunction Fn_FindInMap(Object mapName, Object topLevelKey, Object secondLevelKey) {
         return new IntrinsicFunction("Fn::FindInMap", ImmutableList.of(mapName, topLevelKey, secondLevelKey));
     }
 
-    default IntrinsicFunction fnBase64(Object valueToEncode) {
+    default IntrinsicFunction Fn_Base64(Object valueToEncode) {
         return new IntrinsicFunction("Fn::Base64", valueToEncode);
     }
 
-    @SuppressWarnings("rawtypes")
-    default IntrinsicFunction fnAnd(List conditions) {
+    default IntrinsicFunction Fn_And(List<Object> conditions) {
         return new IntrinsicFunction("Fn::And", conditions);
     }
 
-    default IntrinsicFunction fnEquals(Object value1, Object value2) {
+    default IntrinsicFunction Fn_Equals(Object value1, Object value2) {
         return new IntrinsicFunction("Fn::Equals", ImmutableList.of(value1, value2));
     }
 
-    default IntrinsicFunction fnIf(Object conditionName, Object valueIfTrue, Object valueIfFalse) {
+    default IntrinsicFunction Fn_If(Object conditionName, Object valueIfTrue, Object valueIfFalse) {
         return new IntrinsicFunction("Fn::If", ImmutableList.of(conditionName, valueIfTrue, valueIfFalse));
     }
 
-    default IntrinsicFunction fnNot(Object condition) {
+    default IntrinsicFunction Fn_Not(Object condition) {
         return new IntrinsicFunction("Fn::Not", ImmutableList.of(condition));
     }
 
-    @SuppressWarnings("rawtypes")
-    default IntrinsicFunction fnOr(List conditions) {
+    default IntrinsicFunction Fn_Or(List<Object> conditions) {
         return new IntrinsicFunction("Fn::Or", conditions);
     }
 }

@@ -19,7 +19,7 @@ package com.digitalascent.cfn.core.output;
 import com.digitalascent.cfn.core.cfnresourcespecification.ResourceSpecException;
 import com.digitalascent.cfn.core.cfnresourcespecification.ResourceSpecificationService;
 import com.digitalascent.cfn.core.domain.CfnObject;
-import com.digitalascent.cfn.core.domain.Resource;
+import com.digitalascent.cfn.core.domain.CfnResource;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.SerializerProvider;
@@ -36,6 +36,16 @@ import java.util.function.Function;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.ImmutableMap.toImmutableMap;
 
+/**
+ * Jackson serializer that handles CfnObjects, marshalling their dynamic properties.
+ * <p>
+ * Resolves property names against the <a href="http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-resource-specification.html">CloudFormation CfnResource Specification</a>
+ * via {@link com.digitalascent.cfn.core.cfnresourcespecification.ResourceSpecificationService}, to ensure the correct case.
+ * <br/>
+ * Unknown property names are generate with their first character in upper case (all other characters unchanged), with a warning emitted.
+ * </p>
+ *
+ */
 final class CfnObjectSerializer extends StdSerializer<CfnObject> {
     private final Logger logger = LoggerFactory.getLogger(getClass());
     private static final long serialVersionUID = 83930204L;
@@ -66,7 +76,7 @@ final class CfnObjectSerializer extends StdSerializer<CfnObject> {
         gen.writeStartObject();
         cfnObject.getProperties().forEach((key, value) -> {
             try {
-                gen.writeFieldName(fieldNameFor( key, cfnObject ));
+                gen.writeFieldName(fieldNameForProperty( key, cfnObject ));
                 gen.writeObject(value);
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -76,11 +86,11 @@ final class CfnObjectSerializer extends StdSerializer<CfnObject> {
         gen.writeEndObject();
     }
 
-    private String fieldNameFor( String propertyName, CfnObject cfnObject ) {
-        if( cfnObject instanceof Resource) {
+    private String fieldNameForProperty(String propertyName, CfnObject cfnObject ) {
+        if( cfnObject instanceof CfnResource) {
             String retVal = resourceAttributeMap.get(propertyName.toLowerCase());
             if( retVal == null ) {
-                throw new RuntimeException(String.format("Unable to map resource attribute %s", propertyName) );
+                throw new RuntimeException(String.format("Unable to map resource attribute '%s'", propertyName) );
             }
             return retVal;
         }

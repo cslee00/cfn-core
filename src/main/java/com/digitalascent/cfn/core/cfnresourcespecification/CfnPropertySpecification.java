@@ -18,11 +18,12 @@ package com.digitalascent.cfn.core.cfnresourcespecification;
 
 import com.google.common.base.MoreObjects;
 
+@SuppressWarnings("unused")
 public final class CfnPropertySpecification {
-    private String documentation;
     private String primitiveType;
     private boolean required;
     private String updateType;
+    private String itemType;
 
     CfnPropertySpecification() {
         // EMPTY
@@ -30,12 +31,6 @@ public final class CfnPropertySpecification {
 
     public String getItemType() {
         return itemType;
-    }
-
-    private String itemType;
-
-    public String getDocumentation() {
-        return documentation;
     }
 
     public String getPrimitiveType() {
@@ -53,10 +48,10 @@ public final class CfnPropertySpecification {
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
-                .add("documentation", documentation)
                 .add("primitiveType", primitiveType)
                 .add("required", required)
                 .add("updateType", updateType)
+                .add("itemType", itemType)
                 .toString();
     }
 }

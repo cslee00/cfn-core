@@ -23,6 +23,9 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
 import java.io.IOException;
 
+/**
+ * Jackson serializer that serializes CloudFormation intrinsic functions.
+ */
 final class IntrinsicFunctionSerializer extends StdSerializer<IntrinsicFunction> {
 
     private static final long serialVersionUID = 84929048592303L;

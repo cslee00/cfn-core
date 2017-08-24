@@ -28,16 +28,16 @@ import java.io.OutputStream;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public final class JsonOutputter implements Outputter {
+public final class JsonCloudFormationGenerator implements CloudFormationGenerator {
 
     private final ResourceSpecificationService resourceSpecificationService;
 
-    public JsonOutputter(ResourceSpecificationService resourceSpecificationService) {
+    public JsonCloudFormationGenerator(ResourceSpecificationService resourceSpecificationService) {
         this.resourceSpecificationService = checkNotNull(resourceSpecificationService, "resourceSpecificationService is required");
     }
 
     @Override
-    public void output(Object obj, OutputStream os, boolean prettyPrint) {
+    public void generate(Object obj, OutputStream os, boolean prettyPrint) {
         ObjectMapper mapper = new ObjectMapper();
 
         mapper.configure(SerializationFeature.CLOSE_CLOSEABLE, false);

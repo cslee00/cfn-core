@@ -23,12 +23,12 @@ import java.util.regex.Pattern;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Strings.isNullOrEmpty;
 
-public final class Resource extends CfnObject {
+public final class CfnResource extends CfnObject {
     private final String resourceName;
     private static final Pattern LOGICAL_ID_REGEX = Pattern.compile("[a-zA-Z0-9]+");
     private static final int MAX_LOGICAL_ID_LENGTH = 255;
 
-    public Resource(String name, String type) {
+    public CfnResource(String name, String type) {
         super(type, name);
         checkArgument(!isNullOrEmpty(type), "type is required to be non-null & not empty: %s", type);
         setProperty("type", type);
@@ -38,8 +38,8 @@ public final class Resource extends CfnObject {
         checkArgument(name.length() <= MAX_LOGICAL_ID_LENGTH, "Invalid resource LogicalID '%s'; length must be <= 255", name);
     }
 
-    public static Resource create(String name, String type) {
-        Resource res = new Resource(name, type);
+    public static CfnResource create(String name, String type) {
+        CfnResource res = new CfnResource(name, type);
         res.setProperty("properties", new CfnObject(type, "properties"));
         return res;
     }

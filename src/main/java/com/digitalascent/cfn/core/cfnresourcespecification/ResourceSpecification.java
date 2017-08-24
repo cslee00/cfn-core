@@ -21,6 +21,9 @@ import com.google.common.base.MoreObjects;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-resource-specification.html
+ */
 @SuppressWarnings("unused")
 public final class ResourceSpecification {
 

@@ -21,18 +21,13 @@ import com.google.common.base.MoreObjects;
 import java.util.HashMap;
 import java.util.Map;
 
+@SuppressWarnings("unused")
 public final class CfnTypeSpecification {
-
-    private String documentation;
 
     private final Map<String, CfnPropertySpecification> properties = new HashMap<>();
 
     CfnTypeSpecification() {
         // EMPTY
-    }
-
-    public String getDocumentation() {
-        return documentation;
     }
 
     public Map<String, CfnPropertySpecification> getProperties() {
@@ -42,7 +37,6 @@ public final class CfnTypeSpecification {
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
-                .add("documentation", documentation)
                 .add("properties", properties)
                 .toString();
     }

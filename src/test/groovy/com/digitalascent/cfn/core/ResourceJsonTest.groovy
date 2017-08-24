@@ -1,8 +1,24 @@
-package com.digitalascent.cfndsl.base
+/*
+ * Copyright 2017-2017 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package com.digitalascent.cfn.core
 
 import com.digitalascent.cfn.core.cfnresourcespecification.ResourceSpecificationService
-import com.digitalascent.cfn.core.domain.Resource
-import com.digitalascent.cfn.core.output.JsonOutputter
+import com.digitalascent.cfn.core.domain.CfnResource
+import com.digitalascent.cfn.core.output.JsonCloudFormationGenerator
 import com.digitalascent.cfn.core.strategy.DefaultImmutabilityStrategy
 import groovy.json.JsonSlurper
 import spock.lang.Shared
@@ -11,21 +27,21 @@ import spock.lang.Specification
 class ResourceJsonTest extends Specification{
 
     @Shared
-    Resource subject
+    CfnResource subject
 
     @Shared
     ResourceSpecificationService resourceSpecificationService = new ResourceSpecificationService()
 
     def setupSpec() {
-        Resource anotherResource = Resource.create("resource2","anotherResourceType")
+        CfnResource anotherResource = CfnResource.create("resource2","anotherResourceType")
 
-        subject = Resource.create("resourceName", "AWS::EC2::Instance")
+        subject = CfnResource.create("resourceName", "AWS::EC2::Instance")
 
         subject.dependsOn = "someOtherRes"
         subject.creationPolicy = "creationPolicy"
         subject.properties = {
             instanceType = 'm4.xlarge'
-            subnetID = ref("subnetParam1")
+            subnetID = Ref("subnetParam1")
             blockDeviceMappings = [
                     {
                         deviceName = "abc"
@@ -117,9 +133,9 @@ class ResourceJsonTest extends Specification{
         response["Properties"]["AnotherProp"] == "abc"
     }
 
-    Object marshall( Resource resource ) {
+    Object marshall(CfnResource resource ) {
         ByteArrayOutputStream os = new ByteArrayOutputStream()
-        new JsonOutputter(resourceSpecificationService).output(resource,os,true)
+        new JsonCloudFormationGenerator(resourceSpecificationService).generate(resource,os,true)
         return new JsonSlurper().parse(os.toByteArray() )
     }
 

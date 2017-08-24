@@ -93,12 +93,12 @@ public class CfnObject extends GroovyObjectSupport implements CfnIntrinsicFuncti
             targetValue = handleClosure(propertyName, (Closure) propertyValue, currentValue);
         }
 
-        // replace with ref to other resource
-        if (propertyValue instanceof Resource) {
-            targetValue = ref(propertyValue);
+        // replace with Ref to other resource
+        if (propertyValue instanceof CfnResource) {
+            targetValue = Ref(propertyValue);
         }
 
-        // only output log info on properties, not entire nested objects
+        // only generate log info on properties, not entire nested objects
         if (!(targetValue instanceof CfnObject)) {
             if (currentValue == null) {
                 logger.info("{}: setting '{}' to '{}'", propertyPath, propertyName, targetValue);
@@ -122,8 +122,8 @@ public class CfnObject extends GroovyObjectSupport implements CfnIntrinsicFuncti
             if (item instanceof Closure) {
                 return handleClosure(String.format("%s[%d]", property, counter.getAndIncrement()), (Closure) item, null);
             }
-            if (item instanceof Resource) {
-                return ref(item);
+            if (item instanceof CfnResource) {
+                return Ref(item);
             }
             return item;
         }).collect(toImmutableList());
