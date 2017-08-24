@@ -28,18 +28,16 @@ import java.util.Map;
 public final class ResourceSpecification {
 
     private final Map<String, CfnTypeSpecification> resourceTypes = new HashMap<>();
+    private String resourceSpecificationVersion;
+    private final Map<String, CfnTypeSpecification> propertyTypes = new HashMap<>();
 
     public Map<String, CfnTypeSpecification> getPropertyTypes() {
         return propertyTypes;
     }
 
-    private final Map<String, CfnTypeSpecification> propertyTypes = new HashMap<>();
-
     public String getResourceSpecificationVersion() {
         return resourceSpecificationVersion;
     }
-
-    private String resourceSpecificationVersion;
 
     public Map<String, CfnTypeSpecification> getResourceTypes() {
         return resourceTypes;
