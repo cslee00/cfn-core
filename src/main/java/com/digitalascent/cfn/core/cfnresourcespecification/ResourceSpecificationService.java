@@ -16,6 +16,10 @@
 
 package com.digitalascent.cfn.core.cfnresourcespecification;
 
+import java.util.List;
+
 public interface ResourceSpecificationService {
     String findPropertyNameFor(String resourceType, String propertyPath) throws ResourceSpecException;
+
+    List<String> listResourceTypes();
 }

@@ -17,6 +17,9 @@
 package com.digitalascent.cfn.core.cfnresourcespecification;
 
 import com.digitalascent.base.core.SimpleApplicationObject;
+import com.google.common.collect.ImmutableList;
+
+import java.util.List;
 
 /**
  * http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-resource-specification.html
@@ -24,15 +27,22 @@ import com.digitalascent.base.core.SimpleApplicationObject;
 @SuppressWarnings("unused")
 public final class ResourceSpecificationServiceImpl extends SimpleApplicationObject implements ResourceSpecificationService {
     private final PropertyNameResolver propertyNameResolver;
+    private final List<String> resourceTypes;
 
     public ResourceSpecificationServiceImpl() {
         ResourceSpecificationLoader loader = new ResourceSpecificationLoader();
         ResourceSpecification resourceSpecification = loader.loadResourceSpecification();
         this.propertyNameResolver = new PropertyNameResolver(resourceSpecification);
+        this.resourceTypes = ImmutableList.copyOf(resourceSpecification.getResourceTypes().keySet());
     }
 
     @Override
     public String findPropertyNameFor(String resourceType, String propertyPath) throws ResourceSpecException {
         return propertyNameResolver.resolvePropertyName(resourceType,propertyPath);
+    }
+
+    @Override
+    public List<String> listResourceTypes() {
+        return resourceTypes;
     }
 }
