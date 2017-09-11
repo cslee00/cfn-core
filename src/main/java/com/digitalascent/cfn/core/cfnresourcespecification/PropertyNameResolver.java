@@ -16,7 +16,7 @@
 
 package com.digitalascent.cfn.core.cfnresourcespecification;
 
-import com.digitalascent.base.core.SimpleApplicationObject;
+import com.digitalascent.core.base.SimpleApplicationObject;
 import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableSet;
 

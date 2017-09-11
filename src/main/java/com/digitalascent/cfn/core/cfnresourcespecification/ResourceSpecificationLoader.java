@@ -16,7 +16,7 @@
 
 package com.digitalascent.cfn.core.cfnresourcespecification;
 
-import com.digitalascent.base.core.SimpleApplicationObject;
+import com.digitalascent.core.base.SimpleApplicationObject;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;

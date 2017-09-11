@@ -16,8 +16,8 @@
 
 package com.digitalascent.cfn.core.strategy;
 
-import com.digitalascent.base.core.SimpleApplicationObject;
 import com.digitalascent.cfn.core.domain.CfnObject;
+import com.digitalascent.core.base.SimpleApplicationObject;
 import com.google.common.collect.ForwardingCollection;
 import com.google.common.collect.ForwardingMap;
 import com.google.common.collect.ImmutableList;
