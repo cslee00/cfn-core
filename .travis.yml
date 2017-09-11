@@ -2,12 +2,9 @@ language: java
 jdk:
   - oraclejdk8
 
-before_install:
- - chmod +x gradlew
-
 install: true
 
-script: ./gradlew release
+script: ./gradlew publishArtifacts --stackTrace
 
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock

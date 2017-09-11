@@ -30,12 +30,21 @@ plugins {
     id 'nebula.info' version '3.6.0'
     id 'nebula.info-owners' version '3.6.0'
 
-    // TODO - include dependency info from nebula info broker (reports) somewhere...
+    id 'pl.allegro.tech.build.axion-release' version '1.7.1'
+}
+
+scmVersion {
+    localOnly = true
+    tag {
+        prefix = 'release'
+        versionSeparator = '/'
+    }
 }
 
 sourceCompatibility = 8
 targetCompatibility = 8
 group 'com.digitalascent'
+version = scmVersion.version
 
 repositories {
     jcenter()
@@ -93,6 +102,7 @@ ext.versions = [
         "slf4j" : "1.7.25",
         "jackson": "2.8.9"
 ]
+buildscript.configurations.classpath.each { println it.name }
 
 dependencies {
 
@@ -106,6 +116,8 @@ dependencies {
     implementation "com.fasterxml.jackson.core:jackson-core:${versions.jackson}"
     implementation "com.fasterxml.jackson.core:jackson-databind:${versions.jackson}"
     implementation "com.fasterxml.jackson.core:jackson-annotations:${versions.jackson}"
+
+    implementation "com.digitalascent.digitalascent-core:digitalascent-core-base:0.2.7"
 
     testImplementation 'junit:junit:4.12'
 
@@ -147,11 +159,12 @@ bintray {
     }
 }
 
-task "release"  {
-    dependsOn = [bintrayUpload,artifactoryPublish]
+task "publishArtifacts"  {
+    dependsOn = [release,bintrayUpload,artifactoryPublish]
     group = "publishing"
     def isSnapshot = version.endsWith("SNAPSHOT")
 
+    project.bintrayUpload.enabled = false
     project.artifactoryPublish.enabled = false
     project.bintrayUpload.enabled = false
 
@@ -161,10 +174,8 @@ task "release"  {
 
     if ( tag || (branch == 'master' && pullRequest == 'false')) {
         if( tag && !isSnapshot ) {
-            println "Publishing to Bintray"
             bintrayUpload.enabled = true
         } else {
-            println "Publishing to OJO"
             artifactoryPublish.enabled = true
         }
     }
