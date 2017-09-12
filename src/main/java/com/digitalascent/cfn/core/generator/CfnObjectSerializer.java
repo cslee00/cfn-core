@@ -41,7 +41,7 @@ import static com.google.common.collect.ImmutableMap.toImmutableMap;
  * <p>
  * Resolves property names against the <a href="http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-resource-specification.html">CloudFormation CfnResource Specification</a>
  * via {@link com.digitalascent.cfn.core.cfnresourcespecification.ResourceSpecificationService}, to ensure the correct case.
- * <br></br>
+ *
  * Unknown property names are generate with their first character in upper case (all other characters unchanged), with a warning emitted.
  * </p>
  *
