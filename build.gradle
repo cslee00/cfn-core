@@ -102,7 +102,6 @@ ext.versions = [
         "slf4j" : "1.7.25",
         "jackson": "2.8.9"
 ]
-buildscript.configurations.classpath.each { println it.name }
 
 dependencies {
 
